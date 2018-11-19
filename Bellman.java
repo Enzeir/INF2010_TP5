@@ -25,9 +25,12 @@ public class Bellman {
 	
 	public void shortestPath() {
 		// Compl�ter
+		Vector<Double> lastPiRow = new Vector<>(graph.getNodes().size());
+
 		for(int k = 0; k < graph.getNodes().size(); k++)
 		{
 			Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
+
 			Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 			if(k == 0)
 			{
@@ -36,22 +39,42 @@ public class Bellman {
 					if(j == sourceNode.getId())
 					{
 						tempPiRow.add(0.0);
+						tempRRow.add((int)inf);
 					}
 					else 
 					{
 						tempPiRow.add(inf);
+						tempRRow.add((int)inf);
 					}
 				}
 			}
 			else 
 			{
+				List<Edge> outEdges = graph.getOutEdges(sourceNode);
+				
+				for(int i = 0; i < outEdges.size(); i++)
+				{
+
+					tempPiRow.add(i, outEdges.get(i).getDistance());
+
+				}
 				
 			}
 		
 			
-			
-			piTable.add(tempPiRow);
-			rTable.add(tempRRow);
+			if(lastPiRow != tempPiRow)
+			{
+				piTable.add(tempPiRow);
+				rTable.add(tempRRow);
+				lastPiRow = tempPiRow;
+			}
+			else
+			{
+				piTable.add(tempPiRow);
+				rTable.add(tempRRow);
+				break;
+			}
+
 		}
 		
 	}
