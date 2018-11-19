@@ -23,10 +23,7 @@ public class Graph {
 		File file = new File(filePath);
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		
-		String line = br.readLine();
-		System.out.print(line + "\n");
-		
-		String[] lineSection = line.split(separtor);
+		String[] lineSection = br.readLine().split(separtor);
 		
 		for(int i = 0; i < lineSection.length; i++)
 		{
@@ -35,8 +32,7 @@ public class Graph {
 		
 		for(int i = 0; i < lineSection.length; i++)
 		{
-			line = br.readLine();
-			lineSection = line.split(separtor);
+			lineSection = br.readLine().split(separtor);
 			for(int j = 0; j < lineSection.length; j++)
 			{
 				if(lineSection[j].contains("inf")) 

@@ -12,6 +12,8 @@ public class Bellman {
 	private Node sourceNode;
 	private List<Vector<Double>> piTable =  new ArrayList<Vector<Double>>();
 	private List<Vector<Integer>> rTable =  new ArrayList<Vector<Integer>>();
+	static final double inf = 99999;
+
 	
 	public Bellman (Graph g) {
 		this.graph = g;
@@ -22,15 +24,43 @@ public class Bellman {
 	}
 	
 	public void shortestPath() {
-		// Compléter
+		// Complï¿½ter
+		for(int k = 0; k < graph.getNodes().size(); k++)
+		{
+			Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
+			Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
+			if(k == 0)
+			{
+				for(int j = 0; j < tempPiRow.capacity(); j++)
+				{
+					if(j == sourceNode.getId())
+					{
+						tempPiRow.add(0.0);
+					}
+					else 
+					{
+						tempPiRow.add(inf);
+					}
+				}
+			}
+			else 
+			{
+				
+			}
+		
+			
+			
+			piTable.add(tempPiRow);
+			rTable.add(tempRRow);
+		}
 		
 	}
 	
 	public void  diplayShortestPaths() {
-		//Compléter
+		//Complï¿½ter
 	}
 
 	public void displayTables() {
-	 //Compléter
+	 //Complï¿½ter
 	}
 }
