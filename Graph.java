@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,28 +12,72 @@ import java.util.List;
 public class Graph {
 
 	private List<Node> nodes = new ArrayList<Node>(); // Noeuds
-	private List<Edge> edges = new ArrayList<Edge>();; // Les arcs
+	private List<Edge> edges = new ArrayList<Edge>(); // Les arcs
 	static final double inf = 99999;
 	public Graph() {
 		
 	}
 
-	public void readFromFile(String filePath,String separtor){
-		//compléter
+	public void readFromFile(String filePath,String separtor) throws IOException {
+		//complï¿½ter
+		File file = new File(filePath);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		
+		String line = br.readLine();
+		System.out.print(line + "\n");
+		
+		String[] lineSection = line.split(separtor);
+		
+		for(int i = 0; i < lineSection.length; i++)
+		{
+			nodes.add(new Node(i, lineSection[i]));
+		}
+		
+		for(int i = 0; i < lineSection.length; i++)
+		{
+			line = br.readLine();
+			lineSection = line.split(separtor);
+			for(int j = 0; j < lineSection.length; j++)
+			{
+				if(lineSection[j].contains("inf")) 
+				{
+					edges.add(new Edge(getNodeById(i), getNodeById(j), inf));
+				}
+				else
+				{
+					edges.add(new Edge(getNodeById(i), getNodeById(j), Double.parseDouble(lineSection[j])));
+				}
+			}
+		}
+		br.close();
 	}
 	
 	public List<Edge> getOutEdges(Node source) {
-		List<Edge> outEdges ; 
-		// compléter
-		
+		List<Edge> outEdges = new ArrayList<>(); 
+		// complï¿½ter
+		for(int i = 0; i< edges.size(); i++)
+		{
+			if(edges.get(i).getSource().getName() == source.getName())
+			{
+				outEdges.add(edges.get(i));
+			}
+		}
 		return outEdges;	
 	}
 	
 	public List<Edge> getInEdges(Node dest) {
-		List<Edge> inEdges ; 
-		// compléter
+		List<Edge> inEdges = new ArrayList<>(); 
+		// complï¿½ter
+		for(int i = 0; i < edges.size(); i++)
+		{
+			if(edges.get(i).getDestination().getName() == dest.getName())
+			{
+				inEdges.add(edges.get(i));
+			}
+		}
 		return inEdges;		
 	}
+	
 	// Accesseurs 
 	public List<Node> getNodes() {
 		return nodes;
