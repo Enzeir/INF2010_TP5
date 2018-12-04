@@ -29,11 +29,12 @@ public class Bellman {
 
 		for(int k = 0; k < graph.getNodes().size(); k++)
 		{
-			Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
+			Vector<Double> tempPiRow = lastPiRow;
 
 			Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 			if(k == 0)
 			{
+				//On the first iteration
 				for(int j = 0; j < tempPiRow.capacity(); j++)
 				{
 					if(j == sourceNode.getId())
@@ -50,18 +51,27 @@ public class Bellman {
 			}
 			else 
 			{
-				List<Edge> outEdges = graph.getOutEdges(sourceNode);
-				
-				for(int i = 0; i < outEdges.size(); i++)
+				//After first iteration
+				for(int j = 0; j < lastPiRow.capacity(); j++ ) 
 				{
-
-					tempPiRow.add(i, outEdges.get(i).getDistance());
-
+					if(lastPiRow[j] != inf) 
+					{
+						List<Edge> outEdges = graph.getOutEdges(graph.getNodeById(j));
+						
+						for(Edge edge : outEdges)
+						{
+							int destinationId = edge.getDestination().getId();
+							if(lastPiRow[destinationId] > lastPiRow[j]+ edge.getDistance())
+							{
+								tempPiRow[destinationId]
+							}
+						}
+					}
+					
 				}
-				
 			}
 		
-			
+			/*
 			if(lastPiRow != tempPiRow)
 			{
 				piTable.add(tempPiRow);
@@ -74,6 +84,7 @@ public class Bellman {
 				rTable.add(tempRRow);
 				break;
 			}
+			*/
 
 		}
 		
