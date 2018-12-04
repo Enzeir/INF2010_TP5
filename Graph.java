@@ -55,8 +55,8 @@ public class Graph {
 		for(int i = 0; i< edges.size(); i++)
 		{
 			if(edges.get(i).getSource().getName() == source.getName() 
-					&& edges.get(i).getDestination().getName() != source.getName()
-					&& edges.get(i).getDistance() != inf)
+					&& edges.get(i).getDestination().getName() != source.getName() //verify that the source is not also the destination
+					&& edges.get(i).getDistance() != inf) //verify if the edge is of valid length
 			{
 				outEdges.add(edges.get(i));
 			}
@@ -70,8 +70,8 @@ public class Graph {
 		for(int i = 0; i < edges.size(); i++)
 		{
 			if(edges.get(i).getDestination().getName() == dest.getName() 
-					&& edges.get(i).getSource().getName() != dest.getName()
-					&& edges.get(i).getDistance() != inf);
+					&& edges.get(i).getSource().getName() != dest.getName() //verify that the source is not also the destination
+					&& edges.get(i).getDistance() != inf) //verify if the edge is of valid length
 			{
 				inEdges.add(edges.get(i));
 			}

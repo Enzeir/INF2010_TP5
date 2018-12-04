@@ -54,7 +54,7 @@ public class Bellman {
 			else 
 			{
 				//After first iteration
-				for(int j = 0; j < lastPiRow.capacity(); j++ ) 
+				for(int j = 0; j < lastPiRow.capacity(); j++) 
 				{
 					if(lastPiRow.get(j) != inf)
 					{
