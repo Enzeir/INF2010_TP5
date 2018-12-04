@@ -54,7 +54,9 @@ public class Graph {
 		// compl�ter
 		for(int i = 0; i< edges.size(); i++)
 		{
-			if(edges.get(i).getSource().getName() == source.getName())
+			if(edges.get(i).getSource().getName() == source.getName() 
+					&& edges.get(i).getDestination().getName() != source.getName()
+					&& edges.get(i).getDistance() != inf)
 			{
 				outEdges.add(edges.get(i));
 			}
@@ -67,7 +69,9 @@ public class Graph {
 		// compl�ter
 		for(int i = 0; i < edges.size(); i++)
 		{
-			if(edges.get(i).getDestination().getName() == dest.getName())
+			if(edges.get(i).getDestination().getName() == dest.getName() 
+					&& edges.get(i).getSource().getName() != dest.getName()
+					&& edges.get(i).getDistance() != inf);
 			{
 				inEdges.add(edges.get(i));
 			}

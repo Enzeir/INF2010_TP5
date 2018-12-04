@@ -26,11 +26,12 @@ public class Bellman {
 	public void shortestPath() {
 		// Compl�ter
 		Vector<Double> lastPiRow = new Vector<>(graph.getNodes().size());
+		
+		Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
 
 		for(int k = 0; k < graph.getNodes().size(); k++)
 		{
-			Vector<Double> tempPiRow = lastPiRow;
-
+			
 			Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 			if(k == 0)
 			{
@@ -54,29 +55,30 @@ public class Bellman {
 				//After first iteration
 				for(int j = 0; j < lastPiRow.capacity(); j++ ) 
 				{
-					if(lastPiRow[j] != inf) 
+					if(lastPiRow.get(j) != inf)
 					{
 						List<Edge> outEdges = graph.getOutEdges(graph.getNodeById(j));
 						
 						for(Edge edge : outEdges)
 						{
 							int destinationId = edge.getDestination().getId();
-							if(lastPiRow[destinationId] > lastPiRow[j]+ edge.getDistance())
+							if(lastPiRow.get(j) + edge.getDistance() < lastPiRow.get(destinationId))
 							{
-								tempPiRow[destinationId]
+								tempPiRow.set(destinationId, lastPiRow.get(j) + edge.getDistance());
 							}
 						}
 					}
-					
 				}
 			}
 		
-			/*
-			if(lastPiRow != tempPiRow)
+			
+			if(!(lastPiRow.containsAll(tempPiRow)) || k == 0)
 			{
-				piTable.add(tempPiRow);
-				rTable.add(tempRRow);
-				lastPiRow = tempPiRow;
+				Vector<Double> piRow = (Vector<Double>)tempPiRow.clone();
+				Vector<Integer> rRow = (Vector<Integer>)tempRRow.clone();
+				piTable.add(piRow);
+				rTable.add(rRow);
+				lastPiRow = piRow;
 			}
 			else
 			{
@@ -84,7 +86,7 @@ public class Bellman {
 				rTable.add(tempRRow);
 				break;
 			}
-			*/
+			
 
 		}
 		
