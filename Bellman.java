@@ -29,10 +29,11 @@ public class Bellman {
 		
 		Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
 
+		Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
+
 		for(int k = 0; k < graph.getNodes().size(); k++)
 		{
 			
-			Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 			if(k == 0)
 			{
 				//On the first iteration
@@ -65,6 +66,7 @@ public class Bellman {
 							if(lastPiRow.get(j) + edge.getDistance() < lastPiRow.get(destinationId))
 							{
 								tempPiRow.set(destinationId, lastPiRow.get(j) + edge.getDistance());
+								tempRRow.set(destinationId, edge.getSource().getId());
 							}
 						}
 					}
@@ -72,7 +74,7 @@ public class Bellman {
 			}
 		
 			
-			if(!(lastPiRow.containsAll(tempPiRow)) || k == 0)
+			if(!(lastPiRow.containsAll(tempPiRow)))
 			{
 				Vector<Double> piRow = (Vector<Double>)tempPiRow.clone();
 				Vector<Integer> rRow = (Vector<Integer>)tempRRow.clone();
