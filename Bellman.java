@@ -54,23 +54,8 @@ public class Bellman {
 			else
 			{
 				//After first iteration
-				for(int j = 0; j < lastPiRow.capacity(); j++) 
-				{
-					if(lastPiRow.get(j) != inf)
-					{
-						List<Edge> outEdges = graph.getOutEdges(graph.getNodeById(j));
-						
-						for(Edge edge : outEdges)
-						{
-							int destinationId = edge.getDestination().getId();
-							if(lastPiRow.get(j) + edge.getDistance() < lastPiRow.get(destinationId))
-							{
-								tempPiRow.set(destinationId, lastPiRow.get(j) + edge.getDistance());
-								tempRRow.set(destinationId, edge.getSource().getId());
-							}
-						}
-					}
-				}
+				buildRow(lastPiRow, tempPiRow, tempRRow);
+
 			}
 		
 			
@@ -91,19 +76,53 @@ public class Bellman {
 		}
 	}
 	
+	private void buildRow(Vector<Double> lastPiRow, Vector<Double> tempPiRow, Vector<Integer> tempRRow) {
+		for(int j = 0; j < lastPiRow.capacity(); j++) 
+		{
+			if(lastPiRow.get(j) != inf)
+			{
+				List<Edge> outEdges = graph.getOutEdges(graph.getNodeById(j));
+				
+				for(Edge edge : outEdges)
+				{
+					int destinationId = edge.getDestination().getId();
+					if(lastPiRow.get(j) + edge.getDistance() < lastPiRow.get(destinationId))
+					{
+						tempPiRow.set(destinationId, lastPiRow.get(j) + edge.getDistance());
+						tempRRow.set(destinationId, edge.getSource().getId());
+					}
+				}
+			}
+		}
+	}
+	
 	public void  diplayShortestPaths() {
 		//Compl�ter
+		if(rTable.size() == graph.getNodes().size())
+		{
+			displayNegativePath();
+		}
+		else
+		{
+			displayNormalPath();
+		}
+	}
+	
+	private void displayNegativePath() {
+		
+	}
+	
+	private void displayNormalPath() {
+		
 	}
 
 	public void displayTables() {
 	 //Compl�ter
 		displayPiTable();
 		displayRTable();
-		
 	}
 	
 	public void displayPiTable() {
-
 		List<Node> gNodes = graph.getNodes();
 		
 		StringBuilder sb = new StringBuilder();
