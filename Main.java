@@ -11,7 +11,17 @@ public class Main {
 		bl.setSourceNode(source);
 		bl.shortestPath();
 		bl.displayTables();
+		
+		Graph gNegatif = new Graph();
+		gNegatif.readFromFile("./src/Graph_Negatif.txt", ",");
+		Bellman blNegatif = new Bellman(gNegatif);
+		Node sourceNegatif = gNegatif.getNodeByName("S");
+		blNegatif.setSourceNode(sourceNegatif);
+		blNegatif.shortestPath();
+		blNegatif.displayTables();
 		// Exerice 3: affichage des plus courts chemins
-		bl.diplayShortestPaths();	
+		bl.diplayShortestPaths();
+		
+		//blNegatif.diplayShortestPaths();
 	}
 }

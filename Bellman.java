@@ -31,7 +31,7 @@ public class Bellman {
 
 		Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 
-		for(int k = 0; k < graph.getNodes().size(); k++)
+		for(int k = 0; k <= graph.getNodes().size(); k++)
 		{
 			
 			if(k == 0)
@@ -51,7 +51,7 @@ public class Bellman {
 					}
 				}
 			}
-			else 
+			else
 			{
 				//After first iteration
 				for(int j = 0; j < lastPiRow.capacity(); j++) 
@@ -88,10 +88,7 @@ public class Bellman {
 				rTable.add(tempRRow);
 				break;
 			}
-			
-
 		}
-		
 	}
 	
 	public void  diplayShortestPaths() {
@@ -100,5 +97,71 @@ public class Bellman {
 
 	public void displayTables() {
 	 //Compl�ter
+		displayPiTable();
+		displayRTable();
+		
+	}
+	
+	public void displayPiTable() {
+
+		List<Node> gNodes = graph.getNodes();
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("<<PITable>>:\n\t\t");
+		for(int i = 0; i < gNodes.size(); i++)
+		{
+			sb.append(gNodes.get(i).getName() + "\t");
+		}
+		sb.append("\n");
+		for(int i = 0; i < piTable.size(); i++)
+		{
+			sb.append(i + "\t:\t");
+			for(int j = 0; j < gNodes.size(); j++)
+			{
+				Double distance = piTable.get(i).get(j);
+				if(distance == inf)
+				{
+					sb.append("inf\t");
+				}
+				else
+				{
+					sb.append(distance + "\t");
+				}
+			}
+			sb.append("\n");
+		}
+		sb.append("\n");
+		System.out.print(sb.toString());
+	}
+	
+	public void displayRTable() {
+		List<Node> gNodes = graph.getNodes();
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("<<RTable>>:\nk\t:\t");
+		for(int i = 0; i < gNodes.size(); i++)
+		{
+			sb.append(gNodes.get(i).getName() + "\t");
+		}
+		sb.append("\n");
+		for(int i = 0; i < rTable.size(); i++)
+		{
+			sb.append(i + "\t:\t");
+			for(int j = 0; j < gNodes.size(); j++)
+			{
+				Integer nodeId = rTable.get(i).get(j);
+				if(nodeId == inf)
+				{
+					sb.append("-\t");
+				}
+				else
+				{
+					sb.append(graph.getNodeById(nodeId).getName() + "\t");
+				}
+			}
+			sb.append("\n");
+		}
+		sb.append("\n");
+		System.out.print(sb.toString());
 	}
 }
