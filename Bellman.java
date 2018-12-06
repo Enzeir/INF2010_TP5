@@ -26,9 +26,7 @@ public class Bellman {
 	public void shortestPath() {
 		// Complï¿½ter
 		Vector<Double> lastPiRow = new Vector<>(graph.getNodes().size());
-		
 		Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
-
 		Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 
 		for(int k = 0; k < graph.getNodes().size(); k++)
@@ -56,12 +54,15 @@ public class Bellman {
 				//After first iteration
 				for(int j = 0; j < lastPiRow.capacity(); j++) 
 				{
+					//ce qui ont ete deja visite
 					if(lastPiRow.get(j) != inf)
 					{
+						//les arcs adjacents 
 						List<Edge> outEdges = graph.getOutEdges(graph.getNodeById(j));
 						
 						for(Edge edge : outEdges)
 						{
+							//le sommet adjacent
 							int destinationId = edge.getDestination().getId();
 							if(lastPiRow.get(j) + edge.getDistance() < lastPiRow.get(destinationId))
 							{
@@ -76,11 +77,9 @@ public class Bellman {
 			
 			if(!(lastPiRow.containsAll(tempPiRow)))
 			{
-				Vector<Double> piRow = (Vector<Double>)tempPiRow.clone();
-				Vector<Integer> rRow = (Vector<Integer>)tempRRow.clone();
-				piTable.add(piRow);
-				rTable.add(rRow);
-				lastPiRow = piRow;
+				piTable.add((Vector<Double>)tempPiRow.clone());
+				rTable.add((Vector<Integer>)tempRRow.clone());
+				lastPiRow = (Vector<Double>)tempPiRow.clone();
 			}
 			else
 			{
@@ -96,9 +95,94 @@ public class Bellman {
 	
 	public void  diplayShortestPaths() {
 		//Complï¿½ter
+		Stack<Node> list_path = new Stack<Node>();
+		Node current_node = null;
+		String result = "\nDiplayShortestPaths - Les chemins sont :\n";
+		
+		for(int i = sourceNode.getId() + 1; i <= graph.getNodes().size() - 1; i++)
+		{
+			current_node = graph.getNodeById(i);
+			list_path.push(current_node);
+			
+			do{
+				int nodeId = rTable.get(rTable.size() - 1).get(list_path.peek().getId());
+				if(nodeId==(int)inf)
+					break;
+				
+				list_path.push(graph.getNodeById(nodeId));
+			}while(list_path.peek() != sourceNode && list_path.peek() != current_node);
+			
+			if(current_node == sourceNode && list_path.size()==2)
+				list_path.clear();
+			
+			else if(list_path.peek() == current_node){
+				System.out.print("\nDiplayShortestPaths - Le graphe contient un circuit de coût négatif :\n [" + current_node.getName() + " - " + current_node.getName() + "] ");
+				while(!list_path.isEmpty())
+					if(list_path.size()==1)
+						System.out.print (list_path.pop().getName());
+					else 
+						System.out.print (list_path.pop().getName() + " -> ");
+				return;
+			}
+			else{
+				result += "[" + sourceNode.getName() + " - " + graph.getNodes().get(i).getName() + "] " + piTable.get(piTable.size() - 1).get(i) + " : " + list_path.pop().getName();
+				while(!list_path.isEmpty())
+					result += " -> " + list_path.pop().getName();
+				result += "\n";
+			}
+			
+		}
+		System.out.print(result);
 	}
 
 	public void displayTables() {
 	 //Complï¿½ter
+		String space1 = "      ";
+		String space2 = "    ";
+		String space3 = "  ";
+		
+		System.out.print("PITable : \n");
+		System.out.print("k"+ space3);
+		for(Node node : graph.getNodes())
+		{
+			System.out.print(node.getName() + space1);
+		}
+		System.out.println();
+		
+		
+		int p=0;
+		for(Vector<Double> cout_tab : piTable)
+		{ 
+			System.out.print(p++ + space3);
+			for(Double val : cout_tab)
+			{
+				if (val.equals(Graph.inf))
+					System.out.print("inf" +  space2);
+				else		
+					System.out.print(val +  space2);
+			}
+			System.out.println();
+		}
+			
+		System.out.print("\nRTable : \n");
+		System.out.print("k"+ space3);
+		for(Node node : graph.getNodes())
+		{
+			System.out.print(node.getName() + space1);
+		}
+		System.out.println();
+		int t=0;
+		for(Vector<Integer> i : rTable)
+		{ 
+			System.out.print(t++ + space3 );
+			for(Integer j : i)
+			{
+				if (j==(int)inf)
+					System.out.print("-"+  space1);
+				else		
+					System.out.print(graph.getNodeById(j).getName()+ space1);
+			}
+			System.out.println();
+		}
 	}
 }
