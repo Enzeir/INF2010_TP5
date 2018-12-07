@@ -26,9 +26,7 @@ public class Bellman {
 	public void shortestPath() {
 		// Compl�ter
 		Vector<Double> lastPiRow = new Vector<>(graph.getNodes().size());
-		
 		Vector<Double> tempPiRow = new Vector<>(graph.getNodes().size());
-
 		Vector<Integer> tempRRow = new Vector<>(graph.getNodes().size());
 
 		for(int k = 0; k <= graph.getNodes().size(); k++)
@@ -61,11 +59,9 @@ public class Bellman {
 			
 			if(!(lastPiRow.containsAll(tempPiRow)))
 			{
-				Vector<Double> piRow = (Vector<Double>)tempPiRow.clone();
-				Vector<Integer> rRow = (Vector<Integer>)tempRRow.clone();
-				piTable.add(piRow);
-				rTable.add(rRow);
-				lastPiRow = piRow;
+				piTable.add((Vector<Double>)tempPiRow.clone());
+				rTable.add((Vector<Integer>)tempRRow.clone());
+				lastPiRow = (Vector<Double>)tempPiRow.clone();
 			}
 			else
 			{
@@ -98,14 +94,44 @@ public class Bellman {
 	
 	public void  diplayShortestPaths() {
 		//Compl�ter
-		if(rTable.size() == graph.getNodes().size())
+		Stack<Node> list_path = new Stack<Node>();
+		Node current_node = null;
+		String result = "\nDiplayShortestPaths - Les chemins sont :\n";
+		
+		for(int i = sourceNode.getId() + 1; i <= graph.getNodes().size() - 1; i++)
 		{
-			displayNegativePath();
+			current_node = graph.getNodeById(i);
+			list_path.push(current_node);
+			
+			do{
+				int nodeId = rTable.get(rTable.size() - 1).get(list_path.peek().getId());
+				if(nodeId==(int)inf)
+					break;
+				
+				list_path.push(graph.getNodeById(nodeId));
+			}while(list_path.peek() != sourceNode && list_path.peek() != current_node);
+			
+			if(current_node == sourceNode && list_path.size()==2)
+				list_path.clear();
+			
+			else if(list_path.peek() == current_node){
+				System.out.print("\nDiplayShortestPaths - Le graphe contient un circuit de co�t n�gatif :\n [" + current_node.getName() + " - " + current_node.getName() + "] ");
+				while(!list_path.isEmpty())
+					if(list_path.size()==1)
+						System.out.print (list_path.pop().getName());
+					else 
+						System.out.print (list_path.pop().getName() + " -> ");
+				return;
+			}
+			else{
+				result += "[" + sourceNode.getName() + " - " + graph.getNodes().get(i).getName() + "] " + piTable.get(piTable.size() - 1).get(i) + " : " + list_path.pop().getName();
+				while(!list_path.isEmpty())
+					result += " -> " + list_path.pop().getName();
+				result += "\n";
+			}
+			
 		}
-		else
-		{
-			displayNormalPath();
-		}
+		System.out.print(result);
 	}
 	
 	private void displayNegativePath() {
